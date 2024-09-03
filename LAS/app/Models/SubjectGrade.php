@@ -8,4 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class SubjectGrade extends Model
 {
     use HasFactory;
+
+    public function career()
+    {
+        return $this->belongsTo(Career::class);
+    }
+
+    public function subject()
+    {
+        return $this->belongsTo(Subject::class);
+    }
 }
