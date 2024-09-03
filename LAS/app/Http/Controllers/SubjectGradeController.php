@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Student;
-use App\Http\Requests\StoreStudentRequest;
-use App\Http\Requests\UpdateStudentRequest;
+use App\Models\SubjectGrade;
+use App\Http\Requests\StoreSubjectGradeRequest;
+use App\Http\Requests\UpdateSubjectGradeRequest;
 
-class StudentController extends Controller
+class SubjectGradeController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +27,7 @@ class StudentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreStudentRequest $request)
+    public function store(StoreSubjectGradeRequest $request)
     {
         //
     }
@@ -35,7 +35,7 @@ class StudentController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(SubjectGrade $subjectGrade)
     {
         //
     }
@@ -43,7 +43,7 @@ class StudentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Student $student)
+    public function edit(SubjectGrade $subjectGrade)
     {
         //
     }
@@ -51,7 +51,7 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateStudentRequest $request, Student $student)
+    public function update(UpdateSubjectGradeRequest $request, SubjectGrade $subjectGrade)
     {
         //
     }
@@ -59,7 +59,7 @@ class StudentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
+    public function destroy(SubjectGrade $subjectGrade)
     {
         //
     }
