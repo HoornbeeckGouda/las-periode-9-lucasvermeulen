@@ -5,15 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Career;
 use App\Http\Requests\StoreCareerRequest;
 use App\Http\Requests\UpdateCareerRequest;
+use App\Models\Course;
+use App\Models\Group;
+use App\Models\SchoolYear;
+use App\Models\Student;
 
 class CareerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
+    
     public function index()
     {
-        //
+         $careers = Career::all();   
+       return view('career.index', ['careers' => $careers]);
     }
 
     /**
@@ -21,7 +27,11 @@ class CareerController extends Controller
      */
     public function create()
     {
-        //
+        $school_years = SchoolYear::all();
+        $groups = Group::all();
+        $courses = Course::all();
+        $students = Student::all();
+        return view('career.create', ['school_years' => $school_years, 'groups' => $groups, 'courses' => $courses, 'students' => $students]);
     }
 
     /**
@@ -29,7 +39,15 @@ class CareerController extends Controller
      */
     public function store(StoreCareerRequest $request)
     {
-        //
+        Career::create([
+            'schoolYear_id' => $request->schoolYear_id,
+            'group_id' => $request->group_id,
+            'course_id' => $request->course_id,
+            'student_id' => $request->student_id,
+            'startDate' => now(),
+            'endDate' => now(),
+        ]);
+        return redirect()->route('careers.index');
     }
 
     /**

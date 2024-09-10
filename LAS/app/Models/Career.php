@@ -8,15 +8,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Career extends Model
 {
     use HasFactory;
-    
+    protected $guarded = []; 
+
 
     public function student(): BelongsTo
     {
         return $this->belongsTo(Student::class);
     }
-    public function school_year(): BelongsTo
+    public function schoolYear(): BelongsTo
     {
-        return $this->belongsTo(SchoolYear::class);
+        return $this->belongsTo(SchoolYear::class, 'schoolYear_id');
     }
     public function group(): BelongsTo
     {

@@ -13,13 +13,14 @@ class CourseSeeder extends Seeder
     public function run(): void
     {
         $courses = [
-            'Software Developer',
-            'Applicatie Ontwikkelaar',
-            'Medewerker Beheer ICT'
+            ['Software Developer', '3'],
+            ['Applicatie Ontwikkelaar', '3'],
+            ['Medewerker Beheer ICT', '2']
         ];
         for($i = 0; $i < count($courses); $i++) {
             DB::table('courses')->insert([
-                'name' => $courses[$i],
+                'name' => $courses[$i][0],
+                'years' => $courses[$i][1]
             ]);
         }
     }

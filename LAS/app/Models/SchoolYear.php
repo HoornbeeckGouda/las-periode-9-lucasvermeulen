@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class SchoolYear extends Model
 {
     use HasFactory;
+    protected $guarded = [];
 
     public function careers(): HasMany
     {

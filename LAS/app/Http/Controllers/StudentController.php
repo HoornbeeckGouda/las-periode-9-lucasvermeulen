@@ -13,7 +13,8 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+        $students = Student::all();
+        return view('student.index', ['students' => $students]);
     }
 
     /**
@@ -21,7 +22,7 @@ class StudentController extends Controller
      */
     public function create()
     {
-        //
+        return view('student.create');
     }
 
     /**
@@ -29,7 +30,32 @@ class StudentController extends Controller
      */
     public function store(StoreStudentRequest $request)
     {
-        //
+        $request->validate(
+            [
+                'firstname' => 'required',
+                'lastname' => 'required',
+                'initials' => 'required',
+                'officielename' => 'required',
+                'postcode' => 'required',
+                'streat' => 'required',
+                'housenumber' => 'required',
+                'city' => 'required',
+            ]
+        );
+        Student::create([
+            'firstname' => $request->firstname,
+            'lastname' => $request->lastname,
+            'initials' => $request->initials,
+            'officielename' => $request->officielename,
+            'postcode' => $request->postcode,
+            'streat' => $request->streat,
+            'housenumber' => $request->housenumber,
+            'addition' => $request->addition ?? '',
+            'city' => $request->city,
+        ]);
+        $students = Student::all();
+        return view('student.index', ['students' => $students]);
+
     }
 
     /**
@@ -37,7 +63,8 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
-        //
+        $student = student::find($student->id);
+        return view('student.show', ['student' => $student]);
     }
 
     /**
