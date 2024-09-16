@@ -9,6 +9,11 @@ class Course extends Model
 {
     use HasFactory;
 
+    public function groups()
+    {
+        return $this->hasMany(Group::class);
+    }
+
     public function careers()
     {
         return $this->hasMany(career::class);

@@ -21,7 +21,8 @@ class SubjectGradeController extends Controller
      */
     public function create()
     {
-        //
+        return view('subjectGrades.create');
+
     }
 
     /**

@@ -26,7 +26,7 @@ return new class extends Migration
             $table->foreign('student_id')->references('id')->on('students');
 
             $table->dateTime('startDate');
-            $table->dateTime('endDate');
+            $table->dateTime('endDate')->nullable();
             $table->timestamps();
         });
     }

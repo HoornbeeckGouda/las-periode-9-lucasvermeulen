@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\SubjectGradeController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -20,11 +21,16 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::resource('careers', CareerController::class)
-    ->only(['index', 'store','edit','destroy', 'show', 'create'])
+    ->only(['index', 'store','edit','destroy', 'show', 'create', ''])
     ->middleware(['auth', 'verified']);
+Route::get('careers/pickCareer/{student?}', [CareerController::class, 'pickCareer'])->name('careers.pickCareer'); 
+Route::post('careers/setupCareer/{student?}', [CareerController::class, 'setupCareer'])->name('careers.setupCareer'); 
 
 Route::resource('students', StudentController::class)
-    ->only(['index', 'store','edit','destroy', 'show', 'create'])
+    ->only(['index', 'store','edit','destroy', 'update',  'show', 'create'])
+    ->middleware(['auth', 'verified']);
+Route::resource('subjectGrades', SubjectGradeController::class)
+    ->only(['index', 'store','edit','destroy', 'update',  'show', 'create'])
     ->middleware(['auth', 'verified']);
 
 require __DIR__.'/auth.php';

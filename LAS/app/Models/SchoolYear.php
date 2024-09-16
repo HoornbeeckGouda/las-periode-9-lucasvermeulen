@@ -10,6 +10,11 @@ class SchoolYear extends Model
     use HasFactory;
     protected $guarded = [];
 
+    public function groups(): HasMany
+    {
+        return $this->hasMany(Group::class);
+    }
+
     public function careers(): HasMany
     {
         return $this->hasMany(career::class);

@@ -10,7 +10,8 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
-                            <form action="{{ route('students.store') }}" method="POST">
+                            <form action="{{ route('students.update', $student) }}"  enctype="multipart/form-data" method="POST">
+                                @method('PUT')
                                 @csrf
                                 <div class="w-full flex">
                                     <x-input-text 
@@ -20,7 +21,7 @@
                                         text="Firstname"
                                         class="w-full"
                                         autocomplete=""
-                                        :value="@old('firstname')"
+                                        :value="@old('firstname') ?? $student->firstname"
                                     ></x-input-text>
                                     <x-input-text 
                                         type="text"
@@ -29,7 +30,7 @@
                                         text="Lastname"
                                         class="w-full"
                                         autocomplete=""
-                                        :value="@old('lastname')"
+                                        :value="@old('lastname') ?? $student->lastname"
                                     ></x-input-text>
                                 </div>
                                 <x-input-text 
@@ -39,7 +40,7 @@
                                     text="Initials"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('initials')"
+                                    :value="@old('initials') ?? $student->initials"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -48,7 +49,7 @@
                                     text="Officielename"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('officielename')"
+                                    :value="@old('officielename')  ?? $student->officielename"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -57,7 +58,7 @@
                                     text="Postcode"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('postcode')"
+                                    :value="@old('postcode') ?? $student->postcode"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -66,7 +67,7 @@
                                     text="Streat"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('streat')"
+                                    :value="@old('streat') ?? $student->streat"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -75,7 +76,7 @@
                                     text="Housenumber"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('housenumber')"
+                                    :value="@old('housenumber') ??  $student->housenumber"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -84,7 +85,7 @@
                                     text="Addition"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('addition')"
+                                    :value="@old('addition') ?? $student->addition"
                                 ></x-input-text>
                                 <x-input-text 
                                     type="text"
@@ -93,7 +94,7 @@
                                     text="City"
                                     class="w-full"
                                     autocomplete=""
-                                    :value="@old('city')"
+                                    :value="@old('city') ?? $student->city"
                                 ></x-input-text>
                                 
                                 <x-button>save</x-button>

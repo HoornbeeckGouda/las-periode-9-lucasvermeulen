@@ -40,6 +40,10 @@
                                                 href="{{ route('students.show', $student->id) }}"
                                                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                                                 >Show</a>
+                                            <a 
+                                                href="{{ route('students.edit', $student->id) }}"
+                                                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                                >edit</a>
                                         </td>
                                     </tr>
                                 @endforeach

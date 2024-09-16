@@ -13,16 +13,18 @@ class GroupSeeder extends Seeder
     public function run(): void
     {
         $className = [
-            'T4I1AD',
-            'T4I1BD',
-            'T4I2AD',
-            'T4I2BD',
-            'T4I3AD',
-            'T4I3BD'
+            ['T4I1AD', 1,1],
+            ['T4I1BD', 1,2],
+            ['T4I2AD', 2,1],
+            ['T4I2BD', 2,2],
+            ['T4I3AD', 3,1],
+            ['T4I3BD', 3,2]
         ];
         for($i = 0; $i < count($className); $i++) {
             DB::table('groups')->insert([
-                'name' => $className[$i],
+                'name' => $className[$i][0],
+                'schoolYear_id' => $className[$i][1],
+                'course_id' => $className[$i][2],
             ]);
         }
     }

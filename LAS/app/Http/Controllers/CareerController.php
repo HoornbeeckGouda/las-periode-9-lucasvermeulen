@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Career;
 use App\Http\Requests\StoreCareerRequest;
+use App\Http\Requests\SetupCareerRequest;
 use App\Http\Requests\UpdateCareerRequest;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\SchoolYear;
 use App\Models\Student;
+use GuzzleHttp\Psr7\Request;
 
 class CareerController extends Controller
 {
@@ -33,19 +35,53 @@ class CareerController extends Controller
         $students = Student::all();
         return view('career.create', ['school_years' => $school_years, 'groups' => $groups, 'courses' => $courses, 'students' => $students]);
     }
+    /**
+     * create a new career with known student.
+     */
+    public function pickCareer(Student $student)
+    {
+        $courses = Course::all();
+        $students = Student::all();
+        return view('career.pickCareer', [
+            'courses' => $courses,
+            'students' => $students,
+            'selectedStudent'   => $student
+        ]);
+    }
+    /**
+     * create a new career with known student.
+     */
+    public function setupCareer(SetupCareerRequest $request)
+    {
+        $course_id = $request->course_id;
+        $student_id = $request->student_id;
+        $AmountSchoolYears = Group::where('course_id', $request->course_id)->count();
+        $groups = Group::where('course_id', $request->course_id)->get();
+        $students = Student::all();
+        return view('career.setupCareer', [
+            'course_id' => $course_id,
+            'student_id' => $student_id,
+            'AmountSchoolYears' => $AmountSchoolYears,
+            'groups' => $groups,
+            'students' => $students,
+        ]);
+    }
+    
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(StoreCareerRequest $request)
     {
+        $olderCareer = Career::where('student_id', $request->student_id)->latest()->update(['endDate'=>now()]);
+
         Career::create([
             'schoolYear_id' => $request->schoolYear_id,
             'group_id' => $request->group_id,
             'course_id' => $request->course_id,
             'student_id' => $request->student_id,
             'startDate' => now(),
-            'endDate' => now(),
+            'endDate' => null,
         ]);
         return redirect()->route('careers.index');
     }

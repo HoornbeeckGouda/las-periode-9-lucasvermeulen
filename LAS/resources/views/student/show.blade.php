@@ -1,12 +1,6 @@
 <x-app-layout>
     <x-slot name="header">
         <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            <a  href="{{ url()->previous() }}">
-                <span class="material-symbols-outlined">
-                    keyboard_return
-                    </span>
-               
-            </a>
             {{ __('Show student') }}
         </h2>
     </x-slot>
@@ -16,8 +10,9 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
+                            <a href="{{ route('careers.pickCareer', $student) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">add career</a>
                             <div class="w-full flex">
-                                <x-text-input 
+                                <x-input-text 
                                     type="text"
                                     field="firstname"
                                     name="firstname"
@@ -26,8 +21,8 @@
                                     autocomplete=""
                                     disabled
                                     :value="@old('firstname') ?? $student->firstname"
-                                ></x-text-input>
-                                <x-text-input 
+                                ></x-input-text>
+                                <x-input-text 
                                     type="text"
                                     field="lastname"
                                     name="lastname"
@@ -36,9 +31,9 @@
                                     autocomplete=""
                                     disabled
                                     :value="@old('lastname') ?? $student->lastname"
-                                ></x-text-input>
+                                ></x-input-text>
                             </div>
-                            <x-text-input 
+                            <x-input-text 
                                 type="text"
                                 field="initials"
                                 name="initials"
@@ -47,8 +42,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('initials') ?? $student->initials"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="officielename"
                                 name="officielename"
@@ -57,8 +52,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('officielename') ?? $student->officielename"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="postcode"
                                 name="postcode"
@@ -67,8 +62,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('postcode') ??     $student->postcode"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="streat"
                                 name="streat"
@@ -77,8 +72,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('streat') ?? $student->streat"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="housenumber"
                                 name="housenumber"
@@ -87,8 +82,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('housenumber') ?? $student->housenumber"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="addition"
                                 name="addition"
@@ -97,8 +92,8 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('addition') ?? $student->addition"
-                            ></x-text-input>
-                            <x-text-input 
+                            ></x-input-text>
+                            <x-input-text 
                                 type="text"
                                 field="city"
                                 name="city"
@@ -107,7 +102,7 @@
                                 autocomplete=""
                                 disabled
                                 :value="@old('city') ?? $student->city"
-                            ></x-text-input>
+                            ></x-input-text>
                         </div>
                     </div>
                 </div>
