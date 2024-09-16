@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\SubjectGrade;
 use App\Http\Requests\StoreSubjectGradeRequest;
 use App\Http\Requests\UpdateSubjectGradeRequest;
+use App\Models\Subject;
+use App\Models\Career;
+
+
 
 class SubjectGradeController extends Controller
 {
@@ -21,7 +25,9 @@ class SubjectGradeController extends Controller
      */
     public function create()
     {
-        return view('subjectGrades.create');
+        $subjects = Subject::all();
+        $careers = Career::all();
+        return view('subjectGrade.create', ['subjects' => $subjects, 'careers' => $careers]);
 
     }
 
@@ -30,7 +36,16 @@ class SubjectGradeController extends Controller
      */
     public function store(StoreSubjectGradeRequest $request)
     {
-        //
+        $subjectIds = $request->input('subject_ids');
+        foreach ($subjectIds as $subjectId) {
+            SubjectGrade::create([
+                'career_id' => $request->career_id,
+                'subject_id' => $subjectId,
+                'grade' => 0
+            ]);
+        }
+        return redirect('dashboard');
+
     }
 
     /**

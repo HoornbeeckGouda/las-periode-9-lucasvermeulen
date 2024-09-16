@@ -10,31 +10,25 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
-                            <form action="{{ route('careers.store') }}" method="post">
+                            <form action="{{ route('subjectGrades.store') }}" method="post">
                             @csrf
 
             
-                                 <select name="course_id" id="course_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
-                                    <option value="">Select Course</option>
-                                    @foreach($courses as $course)
-                                        <option value="{{ $course->id }}" data-years="{{ json_encode($course->years) }}">{{ $course->name }}</option>
+                                <select name="career_id" id="career_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
+                                    @foreach($careers as $career)
+                                    <option value="{{ $career->id }}">{{ $career->student()->get()->first()->fistname}} {{ $career->student()->get()->first()->lastname }}</option>
                                     @endforeach
                                 </select>
+                                <div id="subjectContainer">
+                                    {{-- <select onchange="ChangeSubject()" name="subject_id" id="subject_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
+                                        @foreach($subjects as $subject)
+                                        <option value="{{ $subject->id }}">{{ $subject->name}}</option>
+                                        @endforeach
+                                    </select> --}}
+                                </div>
+                                    <button type="button" onclick="newSubject()">plus</button>
                                 
-                                <select name="schoolYear_id" id="schoolYear_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
-                                    <option value="">Select Year</option>
-                                </select>
-                                
-                                <select name="group_id" id="group_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
-                                    @foreach($groups as $group)
-                                    <option value="{{ $group->id }}">{{ $group->name }}</option>
-                                    @endforeach
-                                </select>
-                                <select name="student_id" id="student_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
-                                    @foreach($students as $student)
-                                    <option value="{{ $student->id }}">{{ $student->firstname}} {{ $student->lastname }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" value="" id="subjects" name="subjects">
                                 <x-button>Save</x-button>       
                             </form>
                         </div>
@@ -46,6 +40,52 @@
 
     
     <script>
+        let selectIndex = 0; // Global index variable to keep track of the number of selects
+        let selectedSubjects = {}; // Object to store selected subject values by index
+
+        function newSubject() {
+            const subjectContainer = document.getElementById("subjectContainer");
+            
+            // Create a new select element
+            const newSelect = document.createElement("select");
+            newSelect.name = `subject_ids[]`; // Array name for form submission in Laravel
+            newSelect.classList.add("form-select", "bg-gray-100", "dark:bg-gray-900", "mt-1", "block", "w-full");
+
+            // Add an index to uniquely identify the select element
+            newSelect.setAttribute("data-index", selectIndex);
+
+            // Add the onchange attribute (with the index passed as a parameter)
+            newSelect.setAttribute("onchange", `ChangeSubject(this, ${selectIndex})`);
+
+            // Get the subjects array from the backend (make sure $subjects is available in your Blade template)
+            const subjects = {!! json_encode($subjects->toArray()) !!};
+
+            // Loop through the subjects and create option elements
+            subjects.forEach(subject => {
+                const option = document.createElement("option");
+                option.value = subject.id;
+                option.textContent = subject.name;
+                newSelect.appendChild(option);
+            });
+
+            // Append the newly created select element to the subject container
+            subjectContainer.appendChild(newSelect);
+
+            // Increment the select index for the next select element
+            selectIndex++;
+        }
+
+        // Example ChangeSubject function to update selectedSubjects array
+        function ChangeSubject(selectElement, index) {
+            const selectedSubjectId = selectElement.value;
+            selectedSubjects[index] = selectedSubjectId; // Store subject ID by index in the object
+
+            console.log(`Select with index ${index} changed. Selected subject ID: ${selectedSubjectId}`);
+            console.log(selectedSubjects); // You can see the updated selectedSubjects array here
+        }
+
+        // When the form is submitted, it will automatically include the selected values as an array
+
         //change years of course based on course selected
         document.addEventListener('DOMContentLoaded', function () {
         const coursesSelect = document.getElementById('course_id');
