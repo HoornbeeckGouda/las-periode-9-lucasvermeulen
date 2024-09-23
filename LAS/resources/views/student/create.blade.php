@@ -10,7 +10,7 @@
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
-                            <form action="{{ route('students.store') }}" method="POST">
+                            <form action="{{ route('students.store') }}" enctype="multipart/form-data" method="POST">
                                 @csrf
                                 <div class="w-full flex">
                                     <x-input-text 
@@ -95,6 +95,15 @@
                                     autocomplete=""
                                     :value="@old('city')"
                                 ></x-input-text>
+                                <input 
+                                    type="file"
+                                    
+                                    name="image"
+                                    
+                                    class="w-full"
+                                    autocomplete=""
+                                    :value="@old('image')"
+                                ></input>
                                 
                                 <x-button>save</x-button>
                             </form>

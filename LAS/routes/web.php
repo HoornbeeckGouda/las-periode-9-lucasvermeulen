@@ -29,6 +29,8 @@ Route::post('careers/setupCareer/{student?}', [CareerController::class, 'setupCa
 Route::resource('students', StudentController::class)
     ->only(['index', 'store','edit','destroy', 'update',  'show', 'create'])
     ->middleware(['auth', 'verified']);
+Route::post('students/search}', [StudentController::class, 'search'])->name('students.search'); 
+
 Route::resource('subjectGrades', SubjectGradeController::class)
     ->only(['index', 'store','edit','destroy', 'update',  'show', 'create'])
     ->middleware(['auth', 'verified']);

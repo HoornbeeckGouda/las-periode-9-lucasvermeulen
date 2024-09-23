@@ -29,6 +29,7 @@ class StudentFactory extends Factory
             'housenumber' => $this->faker->buildingNumber(),
             'addition' => $this->faker->word(),
             'city' => $this->faker->city(),
+            'image' => ''
         ];
     }
 }

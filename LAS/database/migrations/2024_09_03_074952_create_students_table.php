@@ -22,6 +22,7 @@ return new class extends Migration
             $table->integer('housenumber');
             $table->string('addition', 45);
             $table->string('city', 45);
+            $table->string('image')->nullable();
             $table->timestamps();
         });
     }

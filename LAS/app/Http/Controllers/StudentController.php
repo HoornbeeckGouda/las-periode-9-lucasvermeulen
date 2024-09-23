@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use Illuminate\Http\Request;
+
 
 class StudentController extends Controller
 {
@@ -15,6 +17,27 @@ class StudentController extends Controller
     {
         $students = Student::all();
         return view('student.index', ['students' => $students]);
+    }
+    public function search(Request $request)
+    {
+        if(isset($request->search)){
+            $students = Student::
+            where('firstname', $request->search)
+            ->orWhere('firstname', 'like', '%' . $request->search . '%')
+            ->orWhere('lastname', 'like', '%' . $request->search . '%')
+            ->orWhere('initials', 'like', '%' . $request->search . '%')
+            ->orWhere('officielename', 'like', '%' . $request->search . '%')
+            ->orWhere('postcode', 'like', '%' . $request->search . '%')
+            ->orWhere('streat', 'like', '%' . $request->search . '%')
+            ->orWhere('housenumber', 'like', '%' . $request->search . '%')
+            ->orWhere('addition', 'like', '%' . $request->search . '%')
+            ->orWhere('city', 'like', '%' . $request->search . '%')
+            ->get();
+        }else{
+            $students = Student::all();
+        }
+        
+        return view('student.index', ['students' => $students, 'search'=> $request->search]);
     }
 
     /**
@@ -29,34 +52,48 @@ class StudentController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreStudentRequest $request)
-    {
-        $request->validate(
-            [
-                'firstname' => 'required',
-                'lastname' => 'required',
-                'initials' => 'required',
-                'officielename' => 'required',
-                'postcode' => 'required',
-                'streat' => 'required',
-                'housenumber' => 'required',
-                'city' => 'required',
-            ]
-        );
-        Student::create([
-            'firstname' => $request->firstname,
-            'lastname' => $request->lastname,
-            'initials' => $request->initials,
-            'officielename' => $request->officielename,
-            'postcode' => $request->postcode,
-            'streat' => $request->streat,
-            'housenumber' => $request->housenumber,
-            'addition' => $request->addition ?? '',
-            'city' => $request->city,
-        ]);
-        $students = Student::all();
-        return view('student.index', ['students' => $students]);
+{
+    // Validate the request
+    // dd($request->all());
+    $request->validate([
+        'firstname' => 'required',
+        'lastname' => 'required',
+        'initials' => 'required',
+        'officielename' => 'required',
+        'postcode' => 'required',
+        'streat' => 'required',
+        'housenumber' => 'required',
+        'city' => 'required',
+        'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image
+    ]);
+
+    // Handle the file upload
+    if($request->hasFile('image')){
+    $newImageName = time() . '-' . $request->firstname . '.' . $request->image->extension();
+    $request->image->move(public_path('images'), $newImageName);
+    }else{
+        $newImageName = null;
 
     }
+    // Create a new student record in the database
+    Student::create([
+        'firstname' => $request->firstname,
+        'lastname' => $request->lastname,
+        'initials' => $request->initials,
+        'officielename' => $request->officielename,
+        'postcode' => $request->postcode,
+        'streat' => $request->streat,
+        'housenumber' => $request->housenumber,
+        'addition' => $request->addition ?? '',
+        'city' => $request->city,
+        'image' => $newImageName, // Save the image name to the database
+    ]);
+
+    // Fetch all students and redirect
+    $students = Student::all();
+    return redirect()->route('students.index', ['students' => $students]);
+}
+
 
     /**
      * Display the specified resource.

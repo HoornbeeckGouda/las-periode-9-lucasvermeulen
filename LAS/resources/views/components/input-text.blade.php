@@ -1,8 +1,9 @@
-@props(['disabled' => false, 'field'=> '', 'name' => '', 'text' => '', 'value' => '' ])	
+@props(['disabled' => false, 'field'=> '', 'name' => '', 'text' => '', 'value' => '', 'type' => '' ])	
 
 <div class="w-full">
     <label for="{{ $name }}" class="block text>gray-700 dark:text-gray-300">{{ $text }}</label> 
     <input 
+        type="{{$type}}"
         name="{{ $name }}"
         value="{{ $value }}"
         {{ $disabled ? 'disabled' : '' }}

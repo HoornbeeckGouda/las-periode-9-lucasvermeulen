@@ -12,8 +12,6 @@
                         <div class="w-full">
                             <form action="{{ route('subjectGrades.store') }}" method="post">
                             @csrf
-
-            
                                 <select name="career_id" id="career_id" class="form-select bg-gray-100 dark:bg-gray-900 mt-1 block w-full">
                                     @foreach($careers as $career)
                                     <option value="{{ $career->id }}">{{ $career->student()->get()->first()->fistname}} {{ $career->student()->get()->first()->lastname }}</option>

@@ -103,6 +103,9 @@
                                 disabled
                                 :value="@old('city') ?? $student->city"
                             ></x-input-text>
+                            {{$student->image}}
+                            <img src="{{ asset('images/' . $student->image) }}" alt="{{ $student->firstname }}"/>
+
                         </div>
                     </div>
                 </div>
