@@ -37,16 +37,16 @@ class SubjectGradeController extends Controller
     public function store(StoreSubjectGradeRequest $request)
     {
         $subjectIds = $request->input('subject_ids');
-        foreach ($subjectIds as $subjectId) {
+        $inputSubject = $request->input('input_subject');
+        for($i = 0; $i < count($subjectIds); $i++){ {
             SubjectGrade::create([
                 'career_id' => $request->career_id,
-                'subject_id' => $subjectId,
-                'grade' => 0
+                'subject_id' => $subjectIds[$i],
+                'grade' => $inputSubject[$i]
             ]);
-        }
+        }}
         return redirect('dashboard');
-
-    }
+        }
 
     /**
      * Display the specified resource.

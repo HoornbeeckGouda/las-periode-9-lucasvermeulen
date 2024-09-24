@@ -97,9 +97,7 @@
                                 ></x-input-text>
                                 <input 
                                     type="file"
-                                    
                                     name="image"
-                                    
                                     class="w-full"
                                     autocomplete=""
                                     :value="@old('image')"

@@ -6,6 +6,7 @@ use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 
 
 class StudentController extends Controller
@@ -73,8 +74,8 @@ class StudentController extends Controller
     $request->image->move(public_path('images'), $newImageName);
     }else{
         $newImageName = null;
-
     }
+    
     // Create a new student record in the database
     Student::create([
         'firstname' => $request->firstname,
@@ -128,8 +129,31 @@ class StudentController extends Controller
                 'streat' => 'required',
                 'housenumber' => 'required',
                 'city' => 'required',
+                'image' => 'nullable|mimes:jpeg,png,jpg,gif,svg|max:2048', // Validate image
             ]
         );
+        
+       
+        if($request->hasFile('image')){
+            $current_image = student::where('id', $student->id )->get()->first()->image;
+            $filePath = public_path('images/' . $current_image);
+            if (File::exists($filePath)) {
+                // Delete the file
+                File::delete($filePath);
+            }
+            $newImageName = time() . '-' . $request->firstname . '.' . $request->image->extension();
+            $request->image->move(public_path('images'), $newImageName);
+        }else{
+            $newImageName = null;
+            if($request->imageFilled == 'true'){
+                $current_image = student::where('id', $student->id )->get()->first()->image;
+                
+                $newImageName = $current_image;
+            }          
+        }
+        
+
+        
         $student->update([
             'firstname' => $request->firstname,
             'lastname' => $request->lastname,
@@ -140,6 +164,8 @@ class StudentController extends Controller
             'housenumber' => $request->housenumber,
             'addition' => $request->addition ?? '',
             'city' => $request->city,
+            'image' => $newImageName, // Save the image name to the database
+
         ]);
         $students = Student::all();
         return view('student.index' , ['students' => $students]);

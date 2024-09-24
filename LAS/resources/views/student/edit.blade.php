@@ -96,6 +96,47 @@
                                     autocomplete=""
                                     :value="@old('city') ?? $student->city"
                                 ></x-input-text>
+                                {{-- <input 
+                                    type="file"
+                                    name="image"
+                                    class="w-full"
+                                    autocomplete=""
+                                    :value="@old('image') ?? $student->image"
+                                ></input> --}}
+                                <input
+                                    type="file"
+                                    name="image"
+                                    class="w-full"
+                                    autocomplete="off"
+                                    value=""
+                                >
+
+                                {{-- If there is an old image from the form submission --}}
+                                @if(old('image'))
+                                    <p>Previously uploaded image: <strong>{{ old('image') }}</strong></p>
+                                @elseif(!empty($student->image))
+                                    {{-- Show the existing image if there’s no new upload --}}
+                                    <p>Current image: <strong>{{ $student->image }}</strong></p>
+                                    <img src="{{ asset('images/' . $student->image) }}" alt="Current Image" style="max-width: 200px;">
+                                    <input
+                                        type="hidden"
+                                        name="imageFilled"
+                                        class="w-full"
+                                        autocomplete="off"
+                                        value="true"
+                                    >
+                                @else
+                                    {{-- Default image if no image has been uploaded --}}
+                                    <p>No image uploaded yet. Default: <strong>1727079641-Arjan.jpg</strong></p>
+                                    <img src="{{ asset('images/1727079641-Arjan.jpg') }}" alt="Default Image" style="max-width: 200px;">
+                                    <input
+                                    type="hidden"
+                                    name="imageFilled"
+                                    class="w-full"
+                                    autocomplete="off"
+                                    value="false"
+                                >
+                                @endif
                                 
                                 <x-button>save</x-button>
                             </form>

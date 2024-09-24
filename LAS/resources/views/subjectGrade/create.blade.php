@@ -26,7 +26,6 @@
                                 </div>
                                     <button type="button" onclick="newSubject()">plus</button>
                                 
-                                <input type="text" value="" id="subjects" name="subjects">
                                 <x-button>Save</x-button>       
                             </form>
                         </div>
@@ -43,7 +42,12 @@
 
         function newSubject() {
             const subjectContainer = document.getElementById("subjectContainer");
-            
+            const newInput = document.createElement("input");
+            newInput.name = `input_subject[${selectIndex}]`; // Array name for form submission in Laravel
+            newInput.setAttribute("data-index", selectIndex);
+
+            subjectContainer.appendChild(newInput);
+
             // Create a new select element
             const newSelect = document.createElement("select");
             newSelect.name = `subject_ids[]`; // Array name for form submission in Laravel
@@ -75,6 +79,7 @@
 
         // Example ChangeSubject function to update selectedSubjects array
         function ChangeSubject(selectElement, index) {
+            const inputSubject = document.getElementById(`input_subject_[${index}]`);
             const selectedSubjectId = selectElement.value;
             selectedSubjects[index] = selectedSubjectId; // Store subject ID by index in the object
 
