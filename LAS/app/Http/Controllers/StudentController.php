@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Student;
 use App\Http\Requests\StoreStudentRequest;
 use App\Http\Requests\UpdateStudentRequest;
+use App\Models\SubjectGrade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 
@@ -26,14 +27,10 @@ class StudentController extends Controller
             where('firstname', $request->search)
             ->orWhere('firstname', 'like', '%' . $request->search . '%')
             ->orWhere('lastname', 'like', '%' . $request->search . '%')
-            ->orWhere('initials', 'like', '%' . $request->search . '%')
-            ->orWhere('officielename', 'like', '%' . $request->search . '%')
-            ->orWhere('postcode', 'like', '%' . $request->search . '%')
-            ->orWhere('streat', 'like', '%' . $request->search . '%')
-            ->orWhere('housenumber', 'like', '%' . $request->search . '%')
-            ->orWhere('addition', 'like', '%' . $request->search . '%')
-            ->orWhere('city', 'like', '%' . $request->search . '%')
-            ->get();
+            ->orWhereHas('careers.course', function ($q) use ($request) {
+                $q->where('name', 'like', '%' . $request->search . '%');
+            })->get();
+            
         }else{
             $students = Student::all();
         }
@@ -102,7 +99,9 @@ class StudentController extends Controller
     public function show(Student $student)
     {
         $student = student::find($student->id);
-        return view('student.show', ['student' => $student]);
+        $careers = $student->careers()->get();
+        $subjectGrades = SubjectGrade::where('career_id', $student->careers()->get()->last()->id)->get();
+        return view('student.show', ['student' => $student, 'careers' => $careers, 'subjectGrades' => $subjectGrades]);
     }
 
     /**

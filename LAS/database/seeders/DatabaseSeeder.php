@@ -3,7 +3,9 @@
 namespace Database\Seeders;
 
 use App\Models\Career;
+use App\Models\Student;
 use App\Models\SubjectGrade;
+use App\Models\Teacher;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,13 +19,10 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'lucas',
-            'email' => 'lucas.a.vermeulen@gmail.com',
-            'password' => 'geheim',
-        ]);
+        
         
         $this->call([
+            RoleSeeder::class,
             CareerSeeder::class,
             CourseSeeder::class,
             CourseSubjectSeeder::class,
@@ -32,6 +31,26 @@ class DatabaseSeeder extends Seeder
             StudentSeeder::class,
             SubjectGradeSeeder::class,
             SubjectSeeder::class,
+            TeacherSeeder::class,
         ]);
+        User::factory()->create([
+            'role_id' => '1',
+            'name' => 'lucas',
+            'email' => 'lucas.a.vermeulen@gmail.com',
+            'password' => 'geheim',
+        ]);
+        // $students = Student::all();
+        // foreach ($students as $student) {
+
+        //     $user = User::factory()->create([
+        //         'name' => $student->firstname,
+        //         'email' => $student->fistname , $student->lastname ,'@larvel.com',
+        //         'password' => 'geheim',
+        //     ]);
+        //     $student->update(['user_id'=>$user->id]);
+
+        // }
+        
+        
     }
 }

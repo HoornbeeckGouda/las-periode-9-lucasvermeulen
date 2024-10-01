@@ -21,6 +21,7 @@ class GroupSeeder extends Seeder
             ['T4I3BD', 3,2]
         ];
         for($i = 0; $i < count($className); $i++) {
+           
             DB::table('groups')->insert([
                 'name' => $className[$i][0],
                 'schoolYear_id' => $className[$i][1],

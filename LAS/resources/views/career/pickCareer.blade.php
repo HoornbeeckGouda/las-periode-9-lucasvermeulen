@@ -30,7 +30,7 @@
                                 @endforeach
                                 </select>
                                 
-                                <x-button>Save</x-button>       
+                                <x-button>Next</x-button>       
                             </form>
                         </div>
                     </div>

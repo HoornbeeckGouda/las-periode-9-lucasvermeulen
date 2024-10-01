@@ -112,6 +112,60 @@
             </div>
         </div>
     </div>
-
+    <div class="flex flex-row  gap-10  max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="basis-1/2">
+            <div class="bg-white border-gray-800 border-2 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                <div class="p-6 text-gray-900 dark:text-gray-100">
+                    <div class="flex justify-between space-x-20 w-full">
+                        <div class="w-full">
+                            <table>
+                                <tr>
+                                    <th>id</th>
+                                    <th>name</th>
+                                    <th>group</th>
+                                    <th>year</th>
+                                    <th>action</th>
+                                </tr>    
+                            @foreach ($careers as $career)
+                                <tr>
+                                    <td>{{ $career->id }}</td>
+                                    <td>{{ $career->course()->get()->first()->name }}</td>
+                                    <td>{{ $career->group()->get()->first()->name }}</td>
+                                    <td>{{ $career->schoolYear()->get()->first()->year }}</td>
+                                </tr>
+                            @endforeach
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- subjectGrade --}}
+        <div class="basis-1/2 ">
+                <div class="bg-white border-gray-800 border-2 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
+                    <div class="p-6 text-gray-900 dark:text-gray-100">
+                        <div class="flex justify-between space-x-20 w-full">
+                            <div class="w-full">
+                                <table>
+                                    <tr>
+                                        <th>id</th>
+                                        <th>subject</th>
+                                        <th>grade</th>
+                                        <th>action</th>
+                                    </tr>    
+                                @foreach ($subjectGrades as $subjectGrade)
+                                    <tr>
+                                        <td>{{ $subjectGrade->id }}</td>
+                                        <td>{{ $subjectGrade->subject()->get()->first()->name }}</td>
+                                        <td>{{ $subjectGrade->grade }}</td>
+                                    </tr>
+                                @endforeach
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
 
 </x-app-layout>
