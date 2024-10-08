@@ -8,10 +8,30 @@ use App\Http\Requests\UpdateStudentRequest;
 use App\Models\SubjectGrade;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use App\Http\Controllers\Controller;
+use Illuminate\Routing\Controllers\HasMiddleware;
+use Illuminate\Routing\Controllers\Middleware;
 
-
-class StudentController extends Controller
+class StudentController extends Controller implements HasMiddleware
 {
+
+    public static function middleware(): array
+    {
+        return [
+            // // examples with aliases, pipe-separated names, guards, etc:
+            // 'role_or_permission:manager|edit articles',
+            // new Middleware('role:author', only: ['index']),
+            // new Middleware(\Spatie\Permission\Middleware\RoleMiddleware::using('manager'), except:['show']),
+            // new Middleware(\Spatie\Permission\Middleware\PermissionMiddleware::using('delete records,api'), only:['destroy']),
+            // examples with aliases, pipe-separated names, guards, etc:
+           
+            new Middleware('permission:index student', only: ['index']),
+            new Middleware('permission:update student', only: ['update']),
+            new Middleware('permission:create student', only: ['create']),
+            new Middleware('permission:delete student', only: ['destroy']),
+            
+        ];
+    }
     /**
      * Display a listing of the resource.
      */

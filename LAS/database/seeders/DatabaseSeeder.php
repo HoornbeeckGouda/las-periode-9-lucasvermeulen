@@ -22,8 +22,6 @@ class DatabaseSeeder extends Seeder
         
         
         $this->call([
-            RoleSeeder::class,
-            CareerSeeder::class,
             CourseSeeder::class,
             CourseSubjectSeeder::class,
             SchoolyearSeeder::class,
@@ -32,9 +30,10 @@ class DatabaseSeeder extends Seeder
             SubjectGradeSeeder::class,
             SubjectSeeder::class,
             TeacherSeeder::class,
+            CareerSeeder::class,
+
         ]);
         User::factory()->create([
-            'role_id' => '1',
             'name' => 'lucas',
             'email' => 'lucas.a.vermeulen@gmail.com',
             'password' => 'geheim',

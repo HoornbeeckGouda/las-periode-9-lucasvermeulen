@@ -21,9 +21,7 @@ class StudentPolicy
      */
     public function view(User $user, Student $student): bool
     {
-        return $user->role_id === 1
-                ? Response::allow()
-                : Response::deny('You do not own this post.');
+       
     }
 
     /**
@@ -31,10 +29,7 @@ class StudentPolicy
      */
     public function create(User $user): bool
     {
-        dd($user);
-        return $user->role_id == 1
-            ? Response::allow()
-            : Response::deny('You do not own this post.');
+       
     }
 
     /**

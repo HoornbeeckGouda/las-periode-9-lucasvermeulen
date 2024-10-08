@@ -11,8 +11,8 @@
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
                             <button> <a href="{{ route('careers.pickCareer', 1) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Career</a></button>
-                            <table>
-                                <tr>
+                            <table class="min-w-full mt-4 table-auto">
+                                <tr class="text-left decoration-3">
                                     <th>Student</th>
                                     <th>Course</th>
                                     <th>Group</th>
@@ -25,7 +25,7 @@
                                         <td>{{$career->course()->get()->first()->name}}</td>
                                         <td>{{$career->group()->get()->first()->name}}</td>
                                         <td>{{$career->schoolYear()->get()->first()->year}}</td>     
-                                        <td><button> <a href="{{ route('careers.pickCareer', $career->student()->get()->first()->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Career</a></button></td>
+                                        <td><button> <a href="{{ route('careers.pickCareer', $career->student()->get()->first()->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Edit Career</a></button></td>
                                     </tr>
                                 @endforeach
                             </table>

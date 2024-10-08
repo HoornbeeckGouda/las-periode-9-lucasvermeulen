@@ -18,12 +18,18 @@
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.index')">
                         {{ __('Students') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
+                    {{-- <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
                         {{ __('Careers') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('subjectGrades.create')" :active="request()->routeIs('subjectGrades.create')">
+                    </x-nav-link> --}}
+                    <x-nav-link :href="route('subjectGrades.index')" :active="request()->routeIs('subjectGrades.index')">
                         {{ __('subjectGrades') }}
                     </x-nav-link>
+                    @can('users')
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('users') }}
+                    </x-nav-link>
+                    @endcan
+                    
                 </div>
             </div>
 

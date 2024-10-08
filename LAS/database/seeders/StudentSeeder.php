@@ -15,7 +15,6 @@ class StudentSeeder extends Seeder
     {
         Student::factory(10)->create()->each(function ($student) {
             $user = User::factory()->create([
-                'role_id' => '2',
                 'name' => $student->firstname,
                 'email' => $student->firstname . '.' . $student->lastname . '@laravel.com',
                 'password' => 'geheim',

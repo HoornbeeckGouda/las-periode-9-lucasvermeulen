@@ -15,7 +15,6 @@ class TeacherSeeder extends Seeder
     {
         Teacher::factory(10)->create()->each(function ($teacher) {
             $user = User::factory()->create([
-                'role_id' => '2',
                 'name' => $teacher->firstname,
                 'email' => $teacher->firstname . '.' . $teacher->lastname . '@laravel.com',
                 'password' => 'geheim',
