@@ -11,12 +11,16 @@ use Illuminate\Support\Facades\File;
 use App\Http\Controllers\Controller;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
-
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+use App\Models\Career;
 class StudentController extends Controller implements HasMiddleware
 {
 
     public static function middleware(): array
-    {
+    {         
+        
+
         return [
             // // examples with aliases, pipe-separated names, guards, etc:
             // 'role_or_permission:manager|edit articles',
@@ -29,8 +33,10 @@ class StudentController extends Controller implements HasMiddleware
             new Middleware('permission:update student', only: ['update']),
             new Middleware('permission:create student', only: ['create']),
             new Middleware('permission:delete student', only: ['destroy']),
+            new Middleware('permission:show student', only: ['show']),
             
         ];
+        
     }
     /**
      * Display a listing of the resource.
@@ -116,13 +122,49 @@ class StudentController extends Controller implements HasMiddleware
     /**
      * Display the specified resource.
      */
-    public function show(Student $student)
+    public function show(Student $student, Request $request)
     {
-        $student = student::find($student->id);
+        if($request->all() != null){
+            dd($request->all());
+        }
+        $studentWithRole = User::role('student')->get()->where('id', Auth::user()->id); 
+        if($studentWithRole->isEmpty()){
+            $student = student::find($student->id);
+        }else {
+            $student = student::find(Auth::user()->id);
+        }
+
         $careers = $student->careers()->get();
         $subjectGrades = SubjectGrade::where('career_id', $student->careers()->get()->last()->id)->get();
-        return view('student.show', ['student' => $student, 'careers' => $careers, 'subjectGrades' => $subjectGrades]);
+        $careerSubjects = $student->careers()->get()->last()->careerSubjects()->get();
+        return view('student.show', [
+            'student' => $student, 
+            'careers' => $careers,
+            'subjectGrades' => $subjectGrades,
+            'careerSubjects' => $careerSubjects,
+        ]);    
     }
+
+
+
+    public function getCareerData($careerId)
+    {
+        // Find the career and related data
+        $careers = Career::all();
+        $career = Career::where('id', $careerId)->get();
+        $student = $career->first()->student()->get()->first();
+        $subjectGrades = SubjectGrade::where('career_id', $career->first()->id)->get();
+        $careerSubjects = $career->first()->careerSubjects()->get();
+        // Pass all careers and the selected career ID to the view
+        return view('partials.career-table', [
+            'careers' => $careers,
+            'student' => $student,
+            'subjectGrades' => $subjectGrades,
+            'careerSubjects' => $careerSubjects,
+            'selectedCareerId' => $careerId
+        ]);
+    }
+
 
     /**
      * Show the form for editing the specified resource.

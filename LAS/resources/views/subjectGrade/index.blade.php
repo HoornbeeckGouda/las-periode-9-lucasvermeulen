@@ -41,6 +41,7 @@
                                 <tr class="text-left decoration-3">
                                     <th>Name</th>
                                     <th>action</th>
+                                    <th></th>
                                 </tr>
                             </thead>
                             
@@ -48,9 +49,14 @@
                                 @foreach($groups as $group)
                                     <tr>
                                         <td>{{ $group->name }}</td> 
+                                        
                                         <td>
                                             <a href="{{ route('subjectGrades.groupGrade', $group->id) }}"
                                                 class="relative right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Grade</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('career-subject.groupAddSubject', $group) }}" 
+                                                class="relative right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Subject</a>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -60,6 +66,10 @@
                                         <td>
                                             <a href="{{ route('subjectGrades.studentGrade', $student->id) }}" 
                                                 class="relative right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Grade</a>
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('career-subject.studentAddSubject', $student) }}" 
+                                                class="relative right-0 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Add Subject</a>
                                         </td>
                                     </tr>
                                 @endforeach

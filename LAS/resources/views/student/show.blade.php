@@ -4,6 +4,7 @@
             {{ __('Show student') }}
         </h2>
     </x-slot>
+
     <div class="py-10">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white border-gray-800 border-2 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
@@ -11,11 +12,7 @@
                     <div class="flex justify-between space-x-20 w-full">
                         <div class="w-full">
                             <div class="w-full flex justify-between items-start">
-                                <!-- Button on the left -->
-                                <a href="{{ route('careers.pickCareer', $student) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                    Add Career
-                                </a>
-                            
+                               
                                 <!-- Image on the right -->
                                 <img src="{{ asset('images/' . ($student->image ?? 'default.png')) }}" 
                                      alt="{{ $student->firstname }}" 
@@ -23,11 +20,12 @@
                             </div>
                             <div class="mt-5 relative border-2 border-blue-500 p-4  rounded-lg">
                                 <!-- Button positioned in the corner -->
-                                <a href="{{ route('students.edit', $student) }}" 
-                                   class="absolute -top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
-                                   <i class="fa-solid fa-pen-to-square"> </i>
-                                </a>
-                            
+                                @can('update student')
+                                    <a href="{{ route('students.edit', $student) }}" 
+                                    class="absolute -top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
+                                    <i class="fa-solid fa-pen-to-square"> </i>
+                                    </a>
+                                @endcan
                                 <!-- Content inside the bordered box -->
                        
                                 <div class="w-full flex">
@@ -122,66 +120,65 @@
             </div>
         </div>
     </div>
-    <div class="flex flex-row  gap-10  max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="basis-1/2">
+    <div class="py-10">
+        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white border-gray-800 border-2 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900 dark:text-gray-100">
                     <div class="flex justify-between space-x-20 w-full">
-                        <div class="w-full">
-                            <table class="w-full text-left">
-                                <thead>
-                                    <tr>
-                                        <th>id</th>
-                                        <th>name</th>
-                                        <th>group</th>
-                                        <th>year</th>
-                                        <th>action</th>
-                                    </tr>   
-                                </thead> 
-                                <tbody>
-                                @foreach ($careers as $career)
-                            
-                                <tr>
-                                    <td>{{ $career->id }}</td>
-                                    <td>{{ $career->course()->get()->first()->name }}</td>
-                                    <td>{{ $career->group()->get()->first()->name }}</td>
-                                    <td>{{ $career->schoolYear()->get()->first()->year }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
+                        <div class="flex flex-row w-full gap-10  max-w-7xl mx-auto sm:px-6 lg:px-8">
+                            @can('show career')
+                            <div class="w-full">
+                                @can('create career')
+                                    <div class="pb-12">
+                                        <a href="{{ route('careers.pickCareer', $student) }}" 
+                                            class="-top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
+                                            <i class="fa-solid fa-address-book"></i>
+                                        </a>
+                                    </div>
+                                @endcan
+                                <select id="careerSelect" name="careerOption" class="bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded border border-blue-500 shadow-lg">
+                                    <option value="0">Select a career</option>
+                                    @foreach ($careers as $career)
+                                        <option value="{{ $career->id }}">{{ $career->course()->first()->name }} - {{ $career->group()->first()->name }} - {{ $career->schoolYear()->first()->year }}</option>
+                                    @endforeach
+                                </select>
 
-                            </table>
+
+                                <script>
+                                    document.getElementById('careerSelect').addEventListener('change', function() {
+                                    var careerId = this.value;
+                                    if (careerId != 0) {
+                                        fetch(`/student-career/${careerId}`, {
+                                            method: 'GET',
+                                            headers: {
+                                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                                'Accept': 'application/json'
+                                            },
+                                        })
+                                        .then(response => response.text())
+                                        .then(html => {
+                                            document.querySelector('#careerTableContainer').innerHTML = html;
+                                            initFlowbite()
+                                            // No need to call Flowbite.init(); directly
+                                            // Just ensure the structure is correct as per Flowbite's documentation
+                                        })
+                                        .catch(error => console.error('Error:', error));
+                                    }
+                                });
+                            </script>
+                                    
+                            <div id="careerTableContainer">
+                                
+                            </div>
                         </div>
+                        @endcan
                     </div>
                 </div>
             </div>
         </div>
-        {{-- subjectGrade --}}
-        <div class="basis-1/2 ">
-                <div class="bg-white border-gray-800 border-2 dark:bg-gray-800 overflow-hidden shadow-sm sm:rounded-lg">
-                    <div class="p-6 text-gray-900 dark:text-gray-100">
-                        <div class="flex justify-between space-x-20 w-full">
-                            <div class="w-full">
-                                <table class="w-full text-left">
-                                    <tr>
-                                        <th>id</th>
-                                        <th>subject</th>
-                                        <th>grade</th>
-                                        <th>action</th>
-                                    </tr>    
-                                @foreach ($subjectGrades as $subjectGrade)
-                                    <tr>
-                                        <td>{{ $subjectGrade->id }}</td>
-                                        <td>{{ $subjectGrade->subject()->get()->first()->name }}</td>
-                                        <td>{{ $subjectGrade->grade }}</td>
-                                    </tr>
-                                @endforeach
-                                </table>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
     </div>
-
+  
+        
+       
+ 
 </x-app-layout>

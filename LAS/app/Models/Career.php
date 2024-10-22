@@ -30,6 +30,9 @@ class Career extends Model
     public function courseSubject(){
         return $this->hasMany(courseSubject::class);
     }
+    public function careerSubjects(){
+        return $this->hasMany(CareerSubject::class);
+    }
     public function subjectGrade(){
         return $this->hasMany(SubjectGrade::class);
     }

@@ -49,28 +49,39 @@ class SubjectGradeController extends Controller
     }
     public function groupStore(Request $request)
     {
+        $subject_id = $request->input('subject_id');
         $careers = $request->input('careers');
         foreach ($careers as $careerData) {
             // Ensure that both career_id and grade exist
             if (isset($careerData['career_id']) && isset($careerData['grade'])) {
                 SubjectGrade::create([
                     'career_id' => $careerData['career_id'],
-                    'subject_id' => 1, // Set subject_id here or pass it in your form if it's dynamic
+                    'subject_id' => $subject_id, // Set subject_id here or pass it in your form if it's dynamic
                     'grade' => $careerData['grade']
                 ]);
             }
         }
-        return view('dashboard');
+        $student = Student::where('id', $request->input('student_id'))->get()->first();
+        $careers = $student->careers()->get();
+        $subjectGrades = SubjectGrade::where('career_id', $student->careers()->get()->last()->id)->get();
+        return view('student.show', ['student' => $student, 'careers' => $careers, 'subjectGrades' => $subjectGrades]);    
+
 
     }
 
 
     //studentGrade
-    public function studentGrade($student_id){
+    public function studentGrade($student_id, $subject_id = null){
+        $subjects = Subject::all();
         $group = Student::where('id', $student_id)->get();
         $careers = Career::where('student_id', $student_id)->get()->last();
         $careers = $careers ? [$careers] : [];
-        return view('subjectGrade.groupGrade', ['student_id' => $student_id, 'careers' => $careers]);
+        return view('subjectGrade.groupGrade', ['student_id' => $student_id, 'careers' => $careers, 'subject_id' => $subject_id, 'subjects' => $subjects]);
+    }
+    //pick a subject
+    public function pickSubject($student){
+        $subjects = Subject::all();
+        return view('subjectGrade.pickSubject', ['subjects' => $subjects, 'student' => $student]);
     }
     /**
      * Show the form for creating a new resource.
@@ -104,7 +115,7 @@ class SubjectGradeController extends Controller
                 'grade' => $inputSubject[$i]
             ]);
         }}
-        return redirect('dashboard');
+        return view('dashboard');
         }
 
     /**

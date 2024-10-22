@@ -21,12 +21,26 @@
                                 @foreach($careers as $career)
                                     <tr>
                                         <td>{{$career->student->firstname}}</td>
-                                        <td> subject</td>
+                                        <td>
+                                            <input type="hidden" name="student_id" value="{{ $career->student->id }}">
+                                            @if($subject_id != null)
+                                                <input type="hidden" name="subject_id" value="{{ $subjects->find('id', $subject_id); }}" readonly >
+                                                {{ $subjects->where('id', $subject_id)->first()->name}}
+                                            @else
+                                                <select name="subject_id" class="form-control border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" >
+                                                    <option value="">Select subject</option>
+                                                    @foreach ($subjects as $subject)
+                                                    <option value="{{ $subject->id }}">{{ $subject->name }}</option>
+                                                    @endforeach
+                                                </select>
+     
+                                            @endif       
+                                        </td>
                                         <td>
                                             <input type="hidden" name="careers[{{ $career->id }}][career_id]" value="{{ $career->id }}">
                                             <input type="text" name="careers[{{ $career->id }}][grade]" value="{{ old('careers.' . $career->id . '.grade') ?? ($grade ?? '') }}">
                                         </td>
-                                        </tr>
+                                    </tr>
                                 @endforeach
                             </table>
                             <x-button>Save</x-button>

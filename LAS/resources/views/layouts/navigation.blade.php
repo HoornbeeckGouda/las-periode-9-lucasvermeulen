@@ -15,18 +15,28 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+                    @can('index student')
                     <x-nav-link :href="route('students.index')" :active="request()->routeIs('students.index')">
                         {{ __('Students') }}
                     </x-nav-link>
+                    
+                    
                     {{-- <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
                         {{ __('Careers') }}
                     </x-nav-link> --}}
                     <x-nav-link :href="route('subjectGrades.index')" :active="request()->routeIs('subjectGrades.index')">
                         {{ __('subjectGrades') }}
                     </x-nav-link>
+                    @endcan
                     @can('users')
                     <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('users') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('roles.index')" :active="request()->routeIs('roles.index')">
+                        {{ __('roles') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('permissions.index')" :active="request()->routeIs('permissions.index')">
+                        {{ __('permissions') }}
                     </x-nav-link>
                     @endcan
                     
