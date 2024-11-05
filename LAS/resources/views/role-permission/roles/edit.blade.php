@@ -14,8 +14,17 @@
                                 @csrf
                                 @method('PUT')
                                 <div>
-                                    <label for="name">role Name</label>
-                                    <input type="text" name="name" id="name" value="{{$role->name}}" class="form-control">
+                                    {{-- <label for="name">role Name</label> --}}
+                                    {{-- <input type="text" name="name" id="name" value="{{$role->name}}" class="form-control"> --}}
+                                    <x-input-text 
+                                    type="text"
+                                    field="name"
+                                    name="name"
+                                    text="Role Name"
+                                    class="w-full"
+                                    autocomplete=""
+                                    :value="@old('name') ??  $role->name"
+                                ></x-input-text>
                                 </div>
                                 <x-button>Save</x-button>       
 

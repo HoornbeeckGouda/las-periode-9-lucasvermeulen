@@ -14,17 +14,23 @@
                             <div class="w-full flex justify-between items-start">
                                
                                 <!-- Image on the right -->
-                                <img src="{{ asset('images/' . ($student->image ?? 'default.png')) }}" 
-                                     alt="{{ $student->firstname }}" 
-                                     class="w-32 h-32 rounded-full object-cover border-2 border-blue-500 shadow-lg" />
+                                <img src="{{ asset($student->image ? 'images/' . $student->image : 'images/default.png') }}" 
+                                    alt="{{ $student->firstname }}" 
+                                    class="w-32 h-32 rounded-full object-cover border-2 border-blue-500 shadow-lg" />
                             </div>
                             <div class="mt-5 relative border-2 border-blue-500 p-4  rounded-lg">
                                 <!-- Button positioned in the corner -->
                                 @can('update student')
-                                    <a href="{{ route('students.edit', $student) }}" 
-                                    class="absolute -top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
-                                    <i class="fa-solid fa-pen-to-square"> </i>
-                                    </a>
+                                <div class="absolute -top-3 -right-3">
+                                    <button data-tooltip-target="edit-{{$student->id}}" data-tooltip-trigger="hover">
+                                        <a href="{{ route('students.edit', $student) }}" class=" bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
+                                            <i class="fa-solid fa-pen-to-square"> </i>
+                                        </a>
+                                    </button>
+                                    <div id="edit-{{$student->id}}" role="tooltip" class="absolute  z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                        edit
+                                    </div>
+                                </div>
                                 @endcan
                                 <!-- Content inside the bordered box -->
                        
@@ -130,10 +136,17 @@
                             <div class="w-full">
                                 @can('create career')
                                     <div class="pb-12">
-                                        <a href="{{ route('careers.pickCareer', $student) }}" 
-                                            class="-top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
-                                            <i class="fa-solid fa-address-book"></i>
-                                        </a>
+                                        
+                                        <div class="">
+                                            <button data-tooltip-target="Pickcareer-{{$student->id}}" data-tooltip-trigger="hover">
+                                                <a href="{{ route('careers.pickCareer', $student) }}" class="-top-3 -right-3 bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded border border-blue-500 shadow-lg">
+                                                    <i class="fa-solid fa-address-book"></i>
+                                                </a>
+                                            </button>
+                                            <div id="Pickcareer-{{$student->id}}" role="tooltip" class="absolute  z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                                edit
+                                            </div>
+                                        </div>
                                     </div>
                                 @endcan
                                 <select id="careerSelect" name="careerOption" class="bg-gray-800 hover:bg-blue-700 text-white font-bold py-2 px-4 w-full rounded border border-blue-500 shadow-lg">

@@ -42,8 +42,8 @@
                             <thead class="text-lg text-gray-700 bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
 
                                 <tr class="text-left decoration-3">
-                                    <th>Name</th>
-                                    <th>Course</th>
+                                    <th>Profile</th>
+                                    <th></th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
@@ -51,11 +51,35 @@
                             <tbody>
                                 @foreach($students as $student)
                                     <tr>
-                                        <td>{{ $student->firstname }} {{ $student->lastname }}</td> 
-                                        <td>{{ optional($student->careers()->whereNull('endDate')->with('course')->first())->course->name ?? 'No course' }}</td>
                                         <td>
-                                            <a href="{{ route('students.show', $student->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">Show</a>
-                                            <a href="{{ route('students.edit', $student->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">Edit</a>
+                                            <img src="{{ asset($student->image ? 'images/' . $student->image : 'images/default.png') }}" 
+                                                alt="{{ $student->firstname }}" 
+                                                class="w-16 h-16 rounded-full object-cover border-2 border-blue-500 shadow-lg" />
+                                        </td>
+                                        <td>
+                                            <div class="text-lg blod">{{ $student->firstname }} {{ $student->lastname }}</div>
+                                            {{ optional($student->careers()->whereNull('endDate')->with('course')->first())->course->name ?? 'No course' }}
+                                            {{ optional($student->careers()->whereNull('endDate')->with('course')->first()->schoolYear)->year ?? 'No course' }}</td>
+                                        <td>
+                                            {{-- show --}}
+                                            <button data-tooltip-target="show-{{$student->id}}" data-tooltip-trigger="hover">
+                                                <a href="{{ route('students.show', $student->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                                    <i class="fa-solid fa-eye"></i>
+                                                </a>
+                                            </button>
+                                            <div id="show-{{$student->id}}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                                Show
+                                            </div>
+                                            {{-- edit --}}
+                                            <button data-tooltip-target="edit-{{$student->id}}" data-tooltip-trigger="hover">
+                                                <a href="{{ route('students.edit', $student->id) }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-4 rounded">
+                                                    <i class="fa-solid fa-pen-to-square"></i>
+                                                </a>
+                                            </button>
+                                            <div id="edit-{{$student->id}}" role="tooltip" class="absolute z-10 invisible inline-block px-3 py-2 text-sm font-medium text-white transition-opacity duration-300 bg-gray-900 rounded-lg shadow-sm opacity-0 tooltip dark:bg-gray-700">
+                                                edit
+                                            </div>
+                                            
                                         </td>
                                     </tr>
                                 @endforeach

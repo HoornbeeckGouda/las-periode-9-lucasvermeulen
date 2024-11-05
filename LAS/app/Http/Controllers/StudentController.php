@@ -14,6 +14,8 @@ use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
 use App\Models\Career;
+use App\Models\Teacher;
+
 class StudentController extends Controller implements HasMiddleware
 {
 
@@ -43,25 +45,53 @@ class StudentController extends Controller implements HasMiddleware
      */
     public function index()
     {
-        $students = Student::all();
+        // Check if the user has the 'docent' role
+        if (User::role('docent')->where('id', Auth::user()->id)->exists()) {
+            $subjectId = Teacher::where('user_id', Auth::user()->id)->value('subject_id');
+            
+            // Start with a query for students filtered by the subject
+            $filteredStudents = Student::whereHas('careers.careerSubjects', function ($query) use ($subjectId) {
+                $query->where('subject_id', $subjectId);
+            });
+        } else {
+            // Retrieve all students if the user is not a 'docent'
+            $filteredStudents = Student::query();
+        }
+        
+        // Execute the query to get students
+        $students = $filteredStudents->get();
+    
         return view('student.index', ['students' => $students]);
     }
     public function search(Request $request)
     {
-        if(isset($request->search)){
-            $students = Student::
-            where('firstname', $request->search)
-            ->orWhere('firstname', 'like', '%' . $request->search . '%')
-            ->orWhere('lastname', 'like', '%' . $request->search . '%')
-            ->orWhereHas('careers.course', function ($q) use ($request) {
-                $q->where('name', 'like', '%' . $request->search . '%');
-            })->get();
-            
-        }else{
-            $students = Student::all();
+        if (User::role('docent')->where('id', Auth::user()->id)->exists()) {
+            $subjectId = Teacher::where('user_id', Auth::user()->id)->value('subject_id');
+        
+            // Start with a query for students filtered by the subject
+            $filteredStudents = Student::whereHas('careers.careerSubjects', function ($query) use ($subjectId) {
+                $query->where('subject_id', $subjectId);
+            });
+        } else {
+            // Start with all students if the user is not a 'docent'
+            $filteredStudents = Student::query();
         }
         
-        return view('student.index', ['students' => $students, 'search'=> $request->search]);
+        // Apply search conditions if search is set
+        if (isset($request->search)) {
+            $filteredStudents = $filteredStudents
+                ->where('firstname', $request->search)
+                ->orWhere('firstname', 'like', '%' . $request->search . '%')
+                ->orWhere('lastname', 'like', '%' . $request->search . '%')
+                ->orWhereHas('careers.course', function ($q) use ($request) {
+                    $q->where('name', 'like', '%' . $request->search . '%');
+                });
+        }
+        
+        // Retrieve the final result with get()
+        $students = $filteredStudents->get();
+        
+        return view('student.index', ['students' => $students, 'search' => $request->search]);
     }
 
     /**
@@ -124,15 +154,15 @@ class StudentController extends Controller implements HasMiddleware
      */
     public function show(Student $student, Request $request)
     {
-        if($request->all() != null){
-            dd($request->all());
-        }
         $studentWithRole = User::role('student')->get()->where('id', Auth::user()->id); 
         if($studentWithRole->isEmpty()){
             $student = student::find($student->id);
         }else {
             $student = student::find(Auth::user()->id);
         }
+
+        
+
 
         $careers = $student->careers()->get();
         $subjectGrades = SubjectGrade::where('career_id', $student->careers()->get()->last()->id)->get();

@@ -22,20 +22,44 @@
                                     class="form-control"
                                     autocomplete=""
                                 ></x-input-text>
-                                    <label for="name">name</label>
-                                    <input type="text" name="name" id="name" value="{{$user->name}}" class="form-control">
+                                    {{-- <label for="name">name</label>
+                                    <input type="text" name="name" id="name" value="{{$user->name}}" class="form-control"> --}}
+                                    <x-input-text 
+                                        type="text"
+                                        field="name"
+                                        name="name"
+                                        text="Name"
+                                        autocomplete=""
+                                        :value="@old('name') ??  $user->name"
+                                    ></x-input-text>
                                 </div>
                                 <div>
-                                    <label for="email">Email</label>
-                                    <input type="text" name="email" id="email" value="{{$user->email}}" class="form-control">
+                                    {{-- <label for="email">Email</label>
+                                    <input type="text" name="email" id="email" value="{{$user->email}}" class="form-control"> --}}
+                                    <x-input-text 
+                                        type="text"
+                                        field="email"
+                                        name="email"
+                                        text="Email"
+                                        autocomplete=""
+                                        :value="@old('email') ??  $user->email"
+                                    ></x-input-text>
                                 </div>
                                 <div>
-                                    <label for="password">Password</label>
-                                    <input type="text" name="password" id="password"  class="form-control">
+                                    {{-- <label for="password">Password</label>
+                                    <input type="text" name="password" id="password"  class="form-control"> --}}
+                                    <x-input-text 
+                                        type="text"
+                                        field="password"
+                                        name="password"
+                                        text="Password"
+                                        autocomplete=""
+                                        :value="@old('password') ??  $user->email"
+                                    ></x-input-text>
                                 </div>
                                 <div class="mb-3">
                                     <label for="">Roles</label>
-                                    <select name="roles[]" class="form-control" multiple>
+                                    <select name="roles[]" class="form-control border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-indigo-500 dark:focus:border-indigo-600 focus:ring-indigo-500 dark:focus:ring-indigo-600 rounded-md shadow-sm" multiple>
                                         <option value="">Select Role</option>
                                         @foreach ($roles as $role)
                                         <option

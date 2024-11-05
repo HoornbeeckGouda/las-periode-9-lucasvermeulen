@@ -13,8 +13,18 @@
                             <form action="{{route('roles.store')}}" method="post">
                                 @csrf
                                 <div>
-                                    <label for="name">roles Name</label>
-                                    <input type="text" name="name" id="name" class="form-control">
+                                    {{-- <label for="name">roles Name</label>
+                                    <input type="text" name="name" id="name" class="form-control"> --}}
+
+                                    <x-input-text 
+                                    type="text"
+                                    field="name"
+                                    name="name"
+                                    text="Role Name"
+                                    class="w-full"
+                                    autocomplete=""
+                                   
+                                ></x-input-text>
                                 </div>
                                 <x-button>Save</x-button>       
 
